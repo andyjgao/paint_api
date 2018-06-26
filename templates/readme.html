@@ -1,0 +1,16 @@
+<!doctype html>
+<head>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='readme.css') }}">
+</head>
+
+<div>
+    <title>README</title>
+    <h1>How to Query API DATA:</h1>
+    <br>
+    <h3>Endpoints:</h3>
+    <ul>
+      <li><span class = "bold">/colors?name=[insert paint name]:</span> seaches for paint based on Color Name</li><br>
+      <li><span class = "bold">/colors/&lt;int:R&gt;/&lt;int:G&gt;/&lt;int:B&gt;:</span> seaches for paint based on RGB value</li><br>
+      <li><span class = "bold">/&lt;string:harmony&gt;/&lt;int:R&gt;/&lt;int:G&gt;/&lt;int:B&gt;:</span> returns the RGB value(s) of the requested harmonies</li>
+    </ul>
+</div>

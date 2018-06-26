@@ -17,6 +17,16 @@ DEFAULT_REPRESENTATIONS = {'application/json': output_json}
 api = Api(app)
 api.representations = DEFAULT_REPRESENTATIONS
 
+
+
+
+@app.route('/')
+def read_me():
+    return render_template('readme.html')
+
+
+
+
 # output for when rgb is not in db
 def errorOutput(r, g, b, string):
     return string.format(
