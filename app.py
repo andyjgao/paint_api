@@ -84,4 +84,5 @@ api.add_resource(NameSearch, '/colors')
 api.add_resource(RGBSearch, '/colors/<int:R>/<int:G>/<int:B>')
 api.add_resource(ColorConvert, '/<string:func>/<int:R>/<int:G>/<int:B>')
 
-app.run(host='0.0.0.0') 
+if __name__ == "__main__":
+	app.run()
