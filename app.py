@@ -112,4 +112,4 @@ api.add_resource(RGBSearch, '/colors/<int:R>/<int:G>/<int:B>')
 api.add_resource(ColorConvert, '/<string:func>/<int:R>/<int:G>/<int:B>')
 
 if __name__ == "__main__":
-	app.run(port=5000,debug=True)
+	app.run()
