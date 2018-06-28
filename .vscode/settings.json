@@ -1,0 +1,9 @@
+{
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "emmet.includeLanguages": {},
+  "emmet.syntaxProfiles": {},
+  "editor.formatOnSave": false,
+  "workbench.iconTheme": "vscode-icons",
+  "python.pythonPath": "/usr/bin/python3"
+}
