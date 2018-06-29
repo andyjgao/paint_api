@@ -114,7 +114,7 @@ class ColorConvert(Resource):
             R = argslist['R']
             G = argslist['G']
             B = argslist['B'] 
-        rgb = [R, G, B]
+        rgb = [int(R), int(G), int(B)]
         color = Color(rgb, "", "")
         
         #based on url, finds the correct function
