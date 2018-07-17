@@ -1,6 +1,8 @@
 import pandas as pd
 import math
-
+from colormath.color_diff import delta_e_cie1976
+from colormath.color_objects import sRGBColor, LabColor
+from colormath.color_conversions import convert_color
 # function to calculate the deltaE and finding the closest match to 
 # RGB value in dataset
 
@@ -11,22 +13,22 @@ def deltaE(mongoCollection, r1, g1, b1):
     
     # initializing return index with base values
     idx = [0, math.inf]
-    
+    rgb1 = sRGBColor(r1,g1,b1,is_upscaled=True)
+    lab1 = convert_color(rgb1,LabColor)
     # calculating lowest deltaE value
     # formula based off of https://en.wikipedia.org/wiki/Color_difference
     for index, row in df.iterrows():
         r2 = row['R']
         g2 = row['G']
         b2 = row['B']
-        barR = (r1-r2)/2
-        deltaR = r1-r2
-        deltaG = g1-g2
-        deltaB = b1-b2
-        deltaC = math.sqrt(2*(deltaR**2)+(4*(deltaG**2)) +
-                           (3*(deltaB**2)) + ((barR * (deltaR**2 - deltaB**2))/256))
+        rgb2 = sRGBColor(r2,g2,b2,is_upscaled=True)
+        lab2 = convert_color(rgb2,LabColor)
 
-        if deltaC < idx[1]:
-            idx = [index, deltaC]
+        delta_e = delta_e_cie1976(lab1, lab2)
+        
+        if delta_e < idx[1]:
+            idx = [index,delta_e]
+            print(delta_e)
         else:
             continue
        

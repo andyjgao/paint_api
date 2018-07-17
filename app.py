@@ -2,15 +2,15 @@
 # Author: Chase Midler, Andy Gao
 # -------------------------------------------------------------------------------
 # Things to fix: 
-# harmony function's delta E (i.e complements do not return the same result)
 # -------------------------------------------------------------------------------
+import requests
 from flask import Flask, request, render_template, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_pymongo import PyMongo
 from output_json import output_json
 from colorharmonies import *
 from deltaE import deltaE
-
+from get_color_image import color_image
 app = Flask(__name__)
 
 # initializing db
@@ -23,7 +23,6 @@ DEFAULT_REPRESENTATIONS = {'application/json': output_json}
 api = Api(app)
 api.representations = DEFAULT_REPRESENTATIONS
 
-
 @app.route('/')
 def read_me():
     return render_template('readme.html')
@@ -35,7 +34,7 @@ def errorOutput(r, g, b, string):
         str(r) + ", " + str(g) + ", " + str(b))
 
 # colorharmoniesFunctions
-function = {'complementary': complementaryColor, 'triadic': triadicColor, 'split_complementary': splitComplementaryColor, 'tetradic': tetradicColor, 'analogous': analogousColor, 'monochromatic': monochromaticColor}
+function = {'complementary': complementaryColor, 'triadic': triadicColor, 'split_complementary': splitComplementaryColor, 'tetradic': tetradicColor, 'analogous': analogousColor, 'monochromatic': monochromaticColor,'lighter': tintColor,'darker': shadeColor}
 
 # searching by Color Name
 class ColorSearch(Resource):
@@ -62,21 +61,30 @@ class ColorSearch(Resource):
             value2 = paintName
             
         elif (argslist['R'] and argslist['G'] and argslist['B']):
-            R = argslist['R']
-            G = argslist['G']
-            B = argslist['B'] 
+            R = int(argslist['R'])
+            G = int(argslist['G'])
+            B = int(argslist['B']) 
             colorExist = colors.find_one(
                 {'R': R, 'G': G, 'B': B})
+            if colorExist == None:
+                dE = deltaE(colors, R, G, B)
+                R,G,B= int(dE[0]),int(dE[1]),int(dE[2])
+                
+            colorExist = colors.find_one({'R': R, 'G': G, 'B': B})
             value1 = 'RGB'
             value2 = '{},{},{}'.format(R,G,B)
-            print(R)
-            print(G)
-            print(B)
-            print(value2)
+            
+            # print(R)
+            # print(G)
+            # print(B)
+            # print(value2)
+            print(colorExist)
         else:
             return 404
       
         if colorExist:
+            imgURL = color_image(colorExist['R'],colorExist['G'],colorExist['B'])
+            colorExist['imgURL'] = imgURL
             result = colorExist
         else:
             result = 'The Color {}: {} does not exist in the Database'.format(value1,value2)
@@ -99,6 +107,7 @@ class ColorConvert(Resource):
     def get(self,func):
         argslist = self.reqparse.parse_args()
         colors = mongo.db.colors
+        R,G,B = "","",""
         if argslist['name']:
 
             paintName = argslist['name'].upper()
@@ -114,6 +123,8 @@ class ColorConvert(Resource):
             R = argslist['R']
             G = argslist['G']
             B = argslist['B'] 
+        else:
+            return 404
         rgb = [int(R), int(G), int(B)]
         color = Color(rgb, "", "")
         
@@ -135,7 +146,8 @@ class ColorConvert(Resource):
                 dE =list(map((lambda x: int(x)), deltaE(colors, lst[0],lst[1],lst[2]) )) 
                 colorExist = colors.find_one({'R': dE[0], 'G': dE[1], 'B': dE[2]})
                 
-                addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name']} }
+                imgURL = color_image(colorExist['R'],colorExist['G'],colorExist['B'])
+                addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'], 'imgURL': imgURL} }
                 colorDic.update(addColor)
                 cnt += 1
             result.append(colorDic)
@@ -145,7 +157,9 @@ class ColorConvert(Resource):
             # runs deltaE function to find nearest color that matches harmony result in dataset 
             dE =list(map((lambda x: int(x)), deltaE(colors, lst[0],lst[1],lst[2]) )) 
             colorExist = colors.find_one({'R': dE[0], 'G': dE[1], 'B': dE[2]})
-            addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'] }} 
+            
+            imgURL = color_image(colorExist['R'],colorExist['G'],colorExist['B'])
+            addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'],'imgURL': imgURL}} 
             result.append(addColor)
 
         return {'result': result }, 200 if result else 404
@@ -154,4 +168,4 @@ api.add_resource(ColorSearch, '/colors')
 api.add_resource(ColorConvert, '/<string:func>')
 
 if __name__ == "__main__":
-	app.run()
+	app.run(port=6969,debug=True)

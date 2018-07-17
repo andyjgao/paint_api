@@ -4,3 +4,8 @@
 .bold{
   font-weight: bold;
 }
+
+.centerdiv{
+  width: 900px;
+  margin: 0 auto;
+}

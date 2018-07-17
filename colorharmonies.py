@@ -121,3 +121,11 @@ def monochromaticColor(ColorInput):
 	[output.append(x) for x in result if x not in output]
 	return output
 
+def shadeColor(colorInput):
+	R,G,B = colorInput.RGB[0],colorInput.RGB[1],colorInput.RGB[2]
+	return [R*.57,G*.57,B*.57]
+
+def tintColor(colorInput):
+	R,G,B = colorInput.RGB[0],colorInput.RGB[1],colorInput.RGB[2]
+	return [R+(.57*(255-R)), G+(.57*(255-G)),B+(.57*(255-B))]
+
