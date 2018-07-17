@@ -145,9 +145,9 @@ class ColorConvert(Resource):
                 # runs deltaE function to find nearest color that matches harmony result in dataset 
                 dE =list(map((lambda x: int(x)), deltaE(colors, lst[0],lst[1],lst[2]) )) 
                 colorExist = colors.find_one({'R': dE[0], 'G': dE[1], 'B': dE[2]})
-                
+             
                 imgURL = color_image(colorExist['R'],colorExist['G'],colorExist['B'])
-                addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'], 'imgURL': imgURL} }
+                addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'], 'desc': colorExist['Color Description'], 'imgURL': imgURL} }
                 colorDic.update(addColor)
                 cnt += 1
             result.append(colorDic)
@@ -157,9 +157,9 @@ class ColorConvert(Resource):
             # runs deltaE function to find nearest color that matches harmony result in dataset 
             dE =list(map((lambda x: int(x)), deltaE(colors, lst[0],lst[1],lst[2]) )) 
             colorExist = colors.find_one({'R': dE[0], 'G': dE[1], 'B': dE[2]})
-            
+            print(colorExist)
             imgURL = color_image(colorExist['R'],colorExist['G'],colorExist['B'])
-            addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'],'imgURL': imgURL}} 
+            addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'], 'desc': colorExist['Color Description'],'imgURL': imgURL}} 
             result.append(addColor)
 
         return {'result': result }, 200 if result else 404
