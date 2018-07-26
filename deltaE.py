@@ -28,7 +28,6 @@ def deltaE(mongoCollection, r1, g1, b1):
         
         if delta_e < idx[1]:
             idx = [index,delta_e]
-            print(delta_e)
         else:
             continue
        

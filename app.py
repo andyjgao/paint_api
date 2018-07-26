@@ -73,12 +73,7 @@ class ColorSearch(Resource):
             colorExist = colors.find_one({'R': R, 'G': G, 'B': B})
             value1 = 'RGB'
             value2 = '{},{},{}'.format(R,G,B)
-            
-            # print(R)
-            # print(G)
-            # print(B)
-            # print(value2)
-            print(colorExist)
+    
         else:
             return 404
       
@@ -157,7 +152,6 @@ class ColorConvert(Resource):
             # runs deltaE function to find nearest color that matches harmony result in dataset 
             dE =list(map((lambda x: int(x)), deltaE(colors, lst[0],lst[1],lst[2]) )) 
             colorExist = colors.find_one({'R': dE[0], 'G': dE[1], 'B': dE[2]})
-            print(colorExist)
             imgURL = color_image(colorExist['R'],colorExist['G'],colorExist['B'])
             addColor = {'color{}'.format(cnt): {'R': dE[0], 'G': dE[1], 'B': dE[2], 'Name': colorExist['Color Name'], 'desc': colorExist['Color Description'],'imgURL': imgURL}} 
             result.append(addColor)
