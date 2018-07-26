@@ -41,8 +41,9 @@ class ColorSearch(Resource):
 
     # initializing url queries  
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
+        self.reqparse = reqparse.RequestParser() 
         self.reqparse.add_argument('name', type = str, location = 'args')
+        self.reqparse.add_argument('color-number', type = str, location = 'args')
         self.reqparse.add_argument('R', type = str, location = 'args')
         self.reqparse.add_argument('G', type = str, location = 'args')
         self.reqparse.add_argument('B', type = str, location = 'args')
@@ -53,6 +54,7 @@ class ColorSearch(Resource):
         argslist = self.reqparse.parse_args()
         colors = mongo.db.colors
         if argslist['name']:
+        
 
             paintName = argslist['name'].upper()
             
@@ -74,6 +76,14 @@ class ColorSearch(Resource):
             value1 = 'RGB'
             value2 = '{},{},{}'.format(R,G,B)
     
+        elif argslist['color-number']:
+            color_number = argslist['color-number'].upper()
+            
+            colorExist = colors.find_one({'Color Number': color_number})
+            value1 = 'Number'
+            value2 = color_number
+            
+
         else:
             return 404
       
