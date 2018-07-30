@@ -186,7 +186,7 @@ class imgTo64(Resource):
         size = 250,250
         img.thumbnail(size)
         buffered = io.BytesIO()
-        img.save(buffered, format="JPEG")
+        img.save(buffered, format="PNG")
         base = base64.b64encode(buffered.getvalue())
         width, height = img.size
 
