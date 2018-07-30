@@ -11,6 +11,11 @@ from output_json import output_json
 from colorharmonies import *
 from deltaE import deltaE
 from get_color_image import color_image
+import base64, io, urllib
+from PIL import Image
+
+def get_as_base64(url):
+    return base64.b64encode(requests.get(url).content)
 app = Flask(__name__)
 
 # initializing db
@@ -167,9 +172,36 @@ class ColorConvert(Resource):
             result.append(addColor)
 
         return {'result': result }, 200 if result else 404
+class imgTo64(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser() 
+        self.reqparse.add_argument('url', type = str)
+        super().__init__()
+
+    def post(self):
+        argslist = self.reqparse.parse_args()
+        url = argslist['url']
+        the_file = io.BytesIO(urllib.request.urlopen(url).read())
+        img=Image.open(the_file)
+        size = 250,250
+        img.thumbnail(size)
+        buffered = io.BytesIO()
+        img.save(buffered, format="JPEG")
+        base = base64.b64encode(buffered.getvalue())
+        print(base)
+        width, height = img.size
+
+        data = {
+            "original": base.decode("utf-8"),
+             "coordinates": [[0, 0], [width, height]]
+        }
+        
+        response = requests.post(url = "https://get-colors-service-dot-color-monarch-flex.appspot.com", json = data)
+        return response.json()
+        
 
 api.add_resource(ColorSearch, '/colors')
 api.add_resource(ColorConvert, '/<string:func>')
-
+api.add_resource(imgTo64,'/')
 if __name__ == "__main__":
 	app.run(port=6969,debug=True)
