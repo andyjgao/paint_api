@@ -188,7 +188,6 @@ class imgTo64(Resource):
         buffered = io.BytesIO()
         img.save(buffered, format="JPEG")
         base = base64.b64encode(buffered.getvalue())
-        print(base)
         width, height = img.size
 
         data = {
@@ -197,7 +196,8 @@ class imgTo64(Resource):
         }
         
         response = requests.post(url = "https://get-colors-service-dot-color-monarch-flex.appspot.com", json = data)
-        return response.json()
+        result = response.json()
+        return {'result': result }, 200 if result else 404 
         
 
 api.add_resource(ColorSearch, '/colors')
