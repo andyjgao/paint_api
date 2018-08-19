@@ -1,7 +1,8 @@
 # -------------------------------------------------------------------------------
 # Author: Chase Midler, Andy Gao
 # -------------------------------------------------------------------------------
-# Things to fix: 
+# Tools uses:
+# MongoDb, Flask,Python
 # -------------------------------------------------------------------------------
 import requests
 from flask import Flask, request, render_template, jsonify
@@ -20,7 +21,7 @@ app = Flask(__name__)
 
 # initializing db
 app.config['MONGO_DBNAME'] = 'ppgcolors'
-app.config['MONGO_URI'] = 'mongodb://supagao:ppgpaint1@ds163410.mlab.com:63410/ppgcolors'
+app.config['MONGO_URI'] = 'mongodb://ppg_paint:ppgpaint1@ds125862.mlab.com:25862/ppgcolors'
 mongo = PyMongo(app)
 
 # fix for json double encoding and initializing API
@@ -41,7 +42,10 @@ def errorOutput(r, g, b, string):
 # colorharmoniesFunctions
 function = {'complementary': complementaryColor, 'triadic': triadicColor, 'split_complementary': splitComplementaryColor, 'tetradic': tetradicColor, 'analogous': analogousColor, 'monochromatic': monochromaticColor,'lighter': tintColor,'darker': shadeColor}
 
-# searching by Color Name
+
+# @route GET /colors?
+# @desc Searches for Color in Database based on given arguments
+# @access Public
 class ColorSearch(Resource):
 
     # initializing url queries  
@@ -60,7 +64,6 @@ class ColorSearch(Resource):
         colors = mongo.db.colors
         if argslist['name']:
         
-
             paintName = argslist['name'].upper()
             
             colorExist = colors.find_one({'Color Name': paintName})
@@ -101,7 +104,9 @@ class ColorSearch(Resource):
         return {'result': result}, 200 if argslist else 404
       
 
-# using colorharmonies function, find resulting colors
+# @route GET /<string:colorharmony>?
+# @desc Given a specific color harmony function listed in functions dictionary, performs function on color
+# @access Public
 class ColorConvert(Resource):
 
     # initializing url queries  
@@ -121,7 +126,8 @@ class ColorConvert(Resource):
         if argslist['name']:
 
             paintName = argslist['name'].upper()
-            
+
+            # Searching for Color 
             if colors.find_one({'Color Name': paintName}):
                 colorExist = colors.find_one({'Color Name': paintName})
                 R = colorExist['R']
@@ -172,7 +178,12 @@ class ColorConvert(Resource):
             result.append(addColor)
 
         return {'result': result }, 200 if result else 404
+
+# @route POST /
+# @desc Given an image, finds most dominant color in database and returns said color
+# @access Public
 class imgTo64(Resource):
+
     def __init__(self):
         self.reqparse = reqparse.RequestParser() 
         self.reqparse.add_argument('url', type = str)
