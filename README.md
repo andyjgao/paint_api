@@ -30,7 +30,7 @@ To deploy type the following in the file folder
 ```
 python app.py
 ```
-
+#### Get Requests
 * __/colors?name=`[insert paint name]`:__ seaches for paint based on Color Name  (i.e. /colors?name=fresh+lemonade)
 * __/colors?R=`[R]`&G=`[G]`&B=`[B]`:__ seaches for paint based on RGB values (i.e. /colors?R=236?G=230?B=120)
 * __/colors?color-number=`[insert PPG Color Number]`:__ seaches for paint based on PPG Color Number (i.e. /colors?color number=ppg1216-5)
