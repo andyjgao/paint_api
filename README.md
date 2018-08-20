@@ -41,6 +41,8 @@ The following are endpoints provided by this api:
 
 #### POST Requests
 * __/:__ Given a json body with the argument 'url', finds most dominant color in database and returns said color (i.e. `{'url': 'https://cdn-image.realsimple.com/sites/default/files/styles/portrait_435x518/public/1528485377/dabito-living-room.png?itok=hQLCEBJD'}`)
+
+To try it out for yourself, check: https://ppgpaint-api.herokuapp.com
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
