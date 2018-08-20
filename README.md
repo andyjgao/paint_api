@@ -31,16 +31,11 @@ To deploy type the following in the file folder
 python app.py
 ```
 
-/colors?name=`[insert paint name]`: seaches for paint based on Color Name 
-(i.e. /colors?name=fresh+lemonade)
-/colors?R=`[R]`&G=`[G]`&B=`[B]`: seaches for paint based on RGB values
-(i.e. /colors?R=236?G=230?B=120)
-/colors?color-number=`[insert PPG Color Number]`: seaches for paint based on PPG Color Number
-(i.e. /colors?color-number=ppg1216-5)
-/<string:harmony>?name=`[insert paint name]`: returns the requested harmony based on Color Name
-(i.e. /complementary?name=fresh+lemonade)
-/<string:harmony>R=`[R]`&G=`[G]`&B=`[B]`: returns the requested harmony based on RGB values
-(i.e. /complementary?R=236?G=230?B=120)
+* /colors?name=`[insert paint name]`: seaches for paint based on Color Name  (i.e. /colors?name=fresh+lemonade)
+* /colors?R=`[R]`&G=`[G]`&B=`[B]`: seaches for paint based on RGB values (i.e. /colors?R=236?G=230?B=120)
+* /colors?color-number=`[insert PPG Color Number]`: seaches for paint based on PPG Color Number (i.e. /colors?color number=ppg1216-5)
+* /<string:harmony>?name=`[insert paint name]`: returns the requested harmony based on Color Name (i.e. /complementary?name=fresh+lemonade)
+* /<string:harmony>R=`[R]`&G=`[G]`&B=`[B]`: returns the requested harmony based on RGB values (i.e. /complementary?R=236?G=230?B=120)
 
 ## License
 
