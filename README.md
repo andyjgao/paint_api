@@ -30,13 +30,17 @@ To deploy type the following in the file folder
 ```
 python app.py
 ```
-#### Get Requests
+The following are endpoints provided by this api: 
+
+#### GET Requests
 * __/colors?name=`[insert paint name]`:__ seaches for paint based on Color Name  (i.e. /colors?name=fresh+lemonade)
 * __/colors?R=`[R]`&G=`[G]`&B=`[B]`:__ seaches for paint based on RGB values (i.e. /colors?R=236?G=230?B=120)
 * __/colors?color-number=`[insert PPG Color Number]`:__ seaches for paint based on PPG Color Number (i.e. /colors?color number=ppg1216-5)
 * __/<string:harmony>?name=`[insert paint name]`:__ returns the requested harmony based on Color Name (i.e. /complementary?name=fresh+lemonade)
 * __/<string:harmony>R=`[R]`&G=`[G]`&B=`[B]`:__ returns the requested harmony based on RGB values (i.e. /complementary?R=236?G=230?B=120)
 
+#### POST Requests
+* __/:__ Given a json body with the argument 'url', finds most dominant color in database and returns said color (i.e. {'url': 'https://cdn-image.realsimple.com/sites/default/files/styles/portrait_435x518/public/1528485377/dabito-living-room.png?itok=hQLCEBJD'})
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
