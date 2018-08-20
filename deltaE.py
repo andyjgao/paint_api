@@ -16,7 +16,6 @@ def deltaE(mongoCollection, r1, g1, b1):
     rgb1 = sRGBColor(r1,g1,b1,is_upscaled=True)
     lab1 = convert_color(rgb1,LabColor)
     # calculating lowest deltaE value
-    # formula based off of https://en.wikipedia.org/wiki/Color_difference
     for index, row in df.iterrows():
         r2 = row['R']
         g2 = row['G']
