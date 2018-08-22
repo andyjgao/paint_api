@@ -21,7 +21,7 @@ app = Flask(__name__)
 
 # initializing db
 app.config['MONGO_DBNAME'] = 'ppgcolors'
-app.config['MONGO_URI'] = 'mongodb://ppg_paint:ppgpaint1@ds125862.mlab.com:25862/ppgcolors'
+app.config['MONGO_URI'] = 'mongodb://paintmaster:paint123!@ds229732.mlab.com:29732/ppgcolors'
 mongo = PyMongo(app)
 
 # fix for json double encoding and initializing API
@@ -180,7 +180,7 @@ class ColorConvert(Resource):
         return {'result': result }, 200 if result else 404
 
 # @route POST /
-# @desc Given an image, finds most dominant color in database and returns said color
+# @desc Given a json body with the argument 'url', finds most dominant color in database and returns said color
 # @access Public
 class imgTo64(Resource):
 
